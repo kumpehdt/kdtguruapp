@@ -1,4 +1,4 @@
-const GAS_ENDPOINT = 'https://script.google.com/macros/s/NEW_ENDPOINT_ID/exec'; // Ganti dengan endpoint GAS Anda
+const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxVVVVH7m5rmXzwkeqOQdUtbpyLfB2BF0qzsV1jiBN4xZfFrGYjF2bFbMETMtLesqdg0Q/exec'; // Ganti dengan endpoint GAS Anda
 
 async function callGAS(action, payload = {}) {
   try {
