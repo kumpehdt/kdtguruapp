@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KDT-Guru Apps</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <!-- Load Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="app.js"></script>
+  <script src="presSantri.js"></script>
+  <script src="presSantriRekap.js"></script>
+  <script src="presGuru.js"></script>
+</head>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('SW terdaftar:', reg.scope))
+      .catch(err => console.error('Gagal daftar SW:', err));
+  }
+</script>
+
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <img src="icons/logo-kop.svg" alt="Logo KOP" class="logo" />
+    <h1 class="judul-aplikasi">KDT-Guru Apps</h1>
+  </header>
+
+  <!-- LOGIN SECTION -->
+  <main id="halamanLogin">
+    <h2>Login Guru</h2>
+    <form id="formLogin">
+      <input type="text" id="namaGuru" placeholder="Masukkan nama guru" required />
+      <button type="submit">Masuk</button>
+    </form>
+  </main>
+
+  <!-- BERANDA (tersembunyi dulu) -->
+<main id="halamanBeranda" style="display: none;">
+
+  <!-- Salam + Teks Berjalan -->
+  <div id="berandaHeader">
+    <h2>Selamat datang, <span id="tampilNamaGuru"></span>!</h2>
+    <div class="marquee-log" style="margin-top: 10px;">
+      <p>Guru Zunli mengisi presensi | Guru Sholahuddin merekap nilai | Guru Aida membuka aplikasi</p>
+    </div>
+  </div>
+
+  <!-- Menu Grid Awal -->
+  <div id="gridMenuBeranda" class="grid-menu kecil">
+    <div class="menu-item" data-target="presensiSantri"><i class="fas fa-user-check icon-menu"></i><br>Presensi Santri</div>
+    <div class="menu-item" data-target="rekapPresensi"><i class="fas fa-list icon-menu"></i><br>Rekap Presensi</div>
+    <div class="menu-item" data-target="presensiSholat"><i class="fas fa-mosque icon-menu"></i><br>Presensi Sholat</div>
+    <div class="menu-item" data-target="presensiGuru"><i class="fas fa-user-tie icon-menu"></i><br>Presensi Guru</div>
+    <div class="menu-item" data-target="inputNilaiBulanan"><i class="fas fa-clipboard icon-menu"></i><br>Input Nilai Bulanan</div>
+    <div class="menu-item" data-target="rekapNilaiBulanan"><i class="fas fa-chart-line icon-menu"></i><br>Rekap Nilai Bulanan</div>
+    <div class="menu-item" data-target="inputNilaiUjian"><i class="fas fa-pen-fancy icon-menu"></i><br>Input Nilai Ujian</div>
+    <div class="menu-item" data-target="rekapNilaiUjian"><i class="fas fa-file-alt icon-menu"></i><br>Rekap Nilai Ujian</div>
+  </div>
+
+  <!-- Konten Beranda: Info umum, grafik, jadwal -->
+  <div id="kontenBerandaUtama">
+    <section class="kartu">
+      <h3>Informasi Umum</h3>
+      <p>Hari ini adalah <strong><span id="tanggalHariIni"></span></strong>.</p>
+    </section>
+
+    <section class="kartu">
+      <h3>Jadwal Guru Hari Ini</h3>
+      <ul>
+        <li>07.30 - 08.10: Bahasa Arab - 1A</li>
+        <li>08.10 - 08.50: Fikih - 2B</li>
+        <li>09.30 - 10.10: Nahwu - 3C</li>
+      </ul>
+    </section>
+
+    <section class="kartu">
+      <h3>Grafik Santri Putra/Putri</h3>
+      <canvas id="grafikSantri" height="200"></canvas>
+    </section>
+  </div>
+
+  <!-- Menu Horizontal (disembunyikan awal) -->
+  <div id="menuHorizontal" class="menu-horizontal" style="display: none;"></div>
+
+  <!-- Konten Menu Aktif (disembunyikan awal) -->
+  <section id="presensiSantri" class="konten-tab" style="display: none;">
+  <h1>Presensi Santri Putra</h1>
+  <form id="attendanceForm">
+    <label for="date">Tanggal:</label>
+    <input type="date" id="date" name="date" required onchange="updateScheduleTable()"><br>
+
+    <div class="label-container">
+      <label for="guruId">Guru:</label>
+      <label style="cursor: pointer; color: blue; font-weight: normal;" onclick="showPopup()">Ubah Guru Default</lebel>
+    </div>
+    <select id="guruId" name="guruId" required onchange="updateMataPelajaran()"></select><br>
+
+<label>Jadwal Mengajar:</label>
+<div id="scheduleContainer" style="overflow-x:auto; margin-bottom:1em;">
+  <table id="scheduleTable">
+    <thead>
+      <tr>
+        <th style="width:50px; text-align:center;">Pilih</th>  <!-- diisi header -->
+        <th>Waktu</th>
+        <th>Kelas</th>
+        <th>Mapel</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- akan diisi oleh JS -->
+    </tbody>
+  </table>
+</div>
+<input type="hidden" id="mataPelajaran" name="mataPelajaran">
+<input type="hidden" id="kelas" name="kelas">
+<input type="hidden" id="waktu" name="waktu">
+
+    <div id="message" style="margin-top: 10px; text-align: center;"></div>
+    <div id="pesanStatusGuru" style="text-align: center; margin-top: 10px;"></div>
+
+  
+    <div id="presensiContainer">
+      <table id="presensiTable"></table>
+      <button id="saveButton" type="button" onclick="submitForm()">Simpan</button>
+      <button id="updateButton" type="button" onclick="updateForm()" style="display: none;">Update</button>
+      <button id="deleteButton" type="button" onclick="deletePresensi()" style="display: none;">Hapus</button>
+      <div id="responseMessage" style="margin-top: 10px; text-align: center;"></div>
+    </div>
+  </form>
+  <div id="loading">
+    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_usmfx6bp.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+    <div id="loadingMessage"></div>
+  </div>
+  <!-- Tambahkan elemen popup di sini -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="closePopup()">&times;</span>
+      <h2>Pilih Guru</h2>
+      <select id="popupGuruId"></select>
+      <button type="button" onclick="setDefaultGuru()">Set Default</button>
+    </div>
+  </div>
+  <!-- Konten yang sudah ada -->
+
+  <!-- Popup untuk pesan -->
+  <div id="messagePopup" class="message-popup">
+    <div class="message-content">
+      <p id="messageText"></p>
+    </div>
+  </div>
+
+  <!-- Popup untuk konfirmasi -->
+  <div id="confirmPopup" class="confirm-popup">
+    <div class="confirm-content">
+      <p id="confirmText"></p>
+      <button id="confirmYes">Ya</button>
+      <button id="confirmNo">Tidak</button>
+    </div>
+  </div>
+  </section>
+
+  <button id="logoutBtn">Keluar</button>
+</main>
+
+
+
+</body>
+</html>

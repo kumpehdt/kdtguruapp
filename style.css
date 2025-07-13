@@ -1,0 +1,266 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #009688;
+  color: white;
+  padding: 15px;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 15px;
+}
+
+.judul-aplikasi {
+  font-size: 1.5em;
+}
+
+main {
+  padding: 20px;
+  text-align: center;
+}
+
+form input {
+  padding: 10px;
+  font-size: 1em;
+  width: 80%;
+  max-width: 300px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #004d40;
+}
+
+.grid-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.menu-item {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #ccc;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #e0f2f1;
+}
+
+#logoutBtn {
+  margin-top: 30px;
+  background-color: #d32f2f;
+  color: white;
+}
+
+.icon-menu {
+  font-size: 2em;
+  color: #009688;
+  margin-bottom: 5px;
+}
+
+.menu-item.aktif {
+  background-color: #e0f2f1;
+  border: 2px solid #009688;
+}
+
+.kartu {
+  background-color: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 0 5px #ccc;
+  text-align: left;
+}
+
+.menu-horizontal {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0 10px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #00968833;
+  scrollbar-width: none;
+}
+
+.menu-horizontal::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.konten-tab {
+  display: none;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.konten-tab.tampil {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.marquee-log {
+  margin-top: 30px;
+  background-color: #009688;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+.marquee-log p {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 15s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+.grid-menu.kecil .menu-item {
+  font-size: 0.8em;
+  padding: 10px;
+}
+
+#gridMenuBeranda {
+  margin-top: 15px;
+}
+
+#menuHorizontal {
+  margin-top: 10px;
+}
+
+#kontenMenuAktif {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.tab-menu {
+  flex: none;
+  text-align: center;
+  min-width: 80px;
+  font-size: 0.75em;
+  background-color: #eee;
+  border-radius: 10px 10px 0 0;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.tab-menu.aktif {
+  background-color: #e0f2f1;
+  border: 2px solid #009688;
+}
+
+.tab-menu i {
+  font-size: 1.5em;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* 1) HEADER MELENGKUNG */
+.header-nu {
+  background-color: #009688;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  border-bottom-left-radius: 50% 20%;
+  border-bottom-right-radius: 50% 20%;
+  position: relative;
+  z-index: 1;
+}
+
+/* 2) GRID MENU “NU” */
+.menu-grid-nu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  background: white;
+  margin: -30px 20px 20px; /* tarik naik ke atas */
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 0;
+  position: relative;
+}
+
+.menu-grid-nu .menu-item {
+  text-align: center;
+  font-size: 0.8em;
+  color: #333;
+}
+
+.menu-grid-nu .menu-item i {
+  font-size: 1.6em;
+  color: #009688;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* 3) KONTEN KARTU */
+.konten-nu {
+  padding: 20px;
+}
+
+.konten-nu .kartu-nu {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* 4) BOTTOM NAV */
+.bottom-nav-nu {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #e0e0e0;
+  padding: 8px 0;
+}
+
+.bottom-nav-nu .nav-item {
+  text-align: center;
+  font-size: 0.7em;
+  color: #777;
+}
+
+.bottom-nav-nu .nav-item.aktif {
+  color: #009688;
+}
+
+.bottom-nav-nu .nav-item i {
+  font-size: 1.4em;
+  display: block;
+}
